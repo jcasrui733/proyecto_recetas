@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 
 
 # class Categoria(models.Model):
@@ -15,11 +16,11 @@ from django.conf import settings
 
 class Receta(models.Model):
     titulo = models.CharField(max_length = 100)
-    ingredientes = models.TextField( blank=False,null=False)
-    pasos_elaboracion = models.TextField(blank=False,null=False)
-    tiempo_preparacion = models.PositiveIntegerField()
-    autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete= models.CASCADE, related_name="recetas")
-    fecha_creacion = models.DateTimeField(auto_now_add= True)
+    ingredientes = models.TextField( blank=False,null=False,max_length=300)
+    pasos_elaboracion = models.TextField(blank=False,null=False,max_length=550)
+    tiempo_preparacion = models.PositiveIntegerField(blank= True,null=True)
+    autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete= models.CASCADE, related_name="recetas", default= 0)
+    fecha_creacion = models.DateTimeField(default= timezone.now)
     
     class Meta:
         ordering = ["-fecha_creacion"]
