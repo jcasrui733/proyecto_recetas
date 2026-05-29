@@ -1,0 +1,25 @@
+{% extends 'recetas/base.html' %}
+{% block title %}Detalle de Receta{% endblock %}
+{% block content %}
+<h2>{{ recetas.titulo }}</h2>
+<p><strong>Ingredientes:</strong> {{ recetas.ingredientes }}</p>
+<p><strong>Pasos:</strong> {{ recetas.pasos_elaboracion }}</p>
+<p><strong>Tiempo de preparación:</strong> {{ recetas.tiempo_preparacion }} minutos</p>
+<hr>
+<h3>Comentarios</h3>
+<ul>
+    {% for comentario in recetas.comentario_set.all %}
+        <li><strong>{{ comentario.autor.username }}:</strong> {{ comentario.contenido }}</li>
+    {% empty %}
+        <li>No hay comentarios aún.</li>
+    {% endfor %}
+</ul>
+<hr>
+<h4>Agregar comentario</h4>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn">Enviar</button>
+</form>
+<a href="{% url 'lista_recetas' %}">Volver a la lista</a>
+{% endblock %}

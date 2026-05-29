@@ -1,0 +1,16 @@
+{% extends 'recetas/base.html' %}
+{% block title %}Lista de Recetas{% endblock %}
+{% block content %}
+<h2>Recetas</h2>
+<ul>
+    {% for receta in recetas %}
+        <li>
+            <a href="{{ receta.get_absolute_url }}">{{ receta.titulo }}</a>
+            <span>({{ receta.tiempo_preparacion }} min)</span>
+        </li>
+    {% empty %}
+        <li>No hay recetas disponibles.</li>
+    {% endfor %}
+</ul>
+<a class="btn" href="{% url 'crear_receta' %}">Agregar nueva receta</a>
+{% endblock %}

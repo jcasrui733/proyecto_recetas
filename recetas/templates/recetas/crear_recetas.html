@@ -1,0 +1,11 @@
+{% extends 'recetas/base.html' %}
+{% block title %}Crear Receta{% endblock %}
+{% block content %}
+<h2>Nueva Receta</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn">Guardar</button>
+</form>
+<a href="{% url 'lista_recetas' %}">Volver a la lista</a>
+{% endblock %}
