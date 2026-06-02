@@ -41,7 +41,7 @@ class EditarRecetaView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     
 class EliminarRecetaView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     model = Receta
-    template_name = "recetas,eliminar_receta.html"
+    template_name = "recetas/eliminar_receta.html"
     success_url = reverse_lazy("lista_recetas")
     def test_func(self):
         receta = self.get_object()

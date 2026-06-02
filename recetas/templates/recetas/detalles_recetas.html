@@ -5,6 +5,10 @@
 <p><strong>Ingredientes:</strong> {{ recetas.ingredientes }}</p>
 <p><strong>Pasos:</strong> {{ recetas.pasos_elaboracion }}</p>
 <p><strong>Tiempo de preparación:</strong> {{ recetas.tiempo_preparacion }} minutos</p>
+{% if user == receta.autor %}
+    <a href="{% url 'editar_receta' receta.pk %}">Editar</a>
+    <a href="{% url 'eliminar_receta' receta.pk %}">Eliminar</a>
+{% endif %}
 <hr>
 <h3>Comentarios</h3>
 <ul>
