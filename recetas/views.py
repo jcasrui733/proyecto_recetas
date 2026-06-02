@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, DetailView, CreateView,UpdateView,DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from .models import Receta
 from .forms import RecetaForm
 
@@ -27,3 +27,22 @@ class CrearRecetaView(LoginRequiredMixin,CreateView):
     def form_valid(self, form):
         form.instance.autor = self.request.user
         return super().form_valid(form)
+    
+class EditarRecetaView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Receta
+    form_class = RecetaForm
+    template_name = "recetas/crear_recetas.html"
+    success_url = reverse_lazy("lista_recetas")
+
+    def test_func(self):
+        receta = self.get_object()
+        return self.request.user == receta.autor
+
+    
+class EliminarRecetaView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+    model = Receta
+    template_name = "recetas,eliminar_receta.html"
+    success_url = reverse_lazy("lista_recetas")
+    def test_func(self):
+        receta = self.get_object()
+        return self.request.user == receta.autor
