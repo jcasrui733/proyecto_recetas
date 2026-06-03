@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView,UpdateView,DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from .models import Receta
-from .forms import RecetaForm
+from .forms import RecetaForm, ComentarioForm
 
 
 class ListaRecetasView(ListView):
@@ -16,6 +16,24 @@ class DetalleRecetaView(DetailView):
     model = Receta
     template_name = "recetas/detalles_recetas.html"
     context_object_name = "receta"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form_comentario"] = ComentarioForm()
+        return context
+    
+def agregar_comentario(request,pk):
+    receta = get_object_or_404(Receta, pk=pk)
+
+    if request.method == "POST" and request.user.is_authenticated:
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.autor = request.user 
+            comentario.reseta_asociada = receta
+            comentario.save()
+    return redirect("detalles_receta", pk=pk)
+
 
 
 class CrearRecetaView(LoginRequiredMixin,CreateView):

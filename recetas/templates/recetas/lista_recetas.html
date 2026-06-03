@@ -5,7 +5,7 @@
 <ul>
     {% for receta in recetas %}
         <li>
-            <a href="{{ receta.get_absolute_url }}">{{ receta.titulo }}</a>
+            <a href="{% url 'detalles_receta' receta.pk %}">{{ receta.titulo }}</a>
             <span>({{ receta.tiempo_preparacion }} min)</span>
         </li>
     {% empty %}
