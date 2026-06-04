@@ -18,6 +18,9 @@
     {% for comentario in receta.recetas.all %}
         <li>
             <strong>{{ comentario.autor.username }}</strong>: {{ comentario.contenido }}
+            {% if user == comentario.autor %}
+            <a href="{% url 'eliminar_comentario' comentario.pk %}">Eliminar</a>
+            {% endif %}
         </li>
     {% empty %}
         <li>No hay comentarios todavía.</li>

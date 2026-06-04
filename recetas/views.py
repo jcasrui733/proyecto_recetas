@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView,UpdateView,DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
-from .models import Receta
+from .models import Receta,Comentario
 from .forms import RecetaForm, ComentarioForm
 
 
@@ -33,6 +33,14 @@ def agregar_comentario(request,pk):
             comentario.reseta_asociada = receta
             comentario.save()
     return redirect("detalles_receta", pk=pk)
+
+def eliminar_comentario(request, pk):
+    comentario = get_object_or_404(Comentario, pk=pk)
+    if request.user == comentario.autor:
+        receta_pk = comentario.reseta_asociada.pk
+        comentario.delete()
+        return redirect("detalles_receta", pk=receta_pk)
+    return redirect("lista_recetas")
 
 
 
