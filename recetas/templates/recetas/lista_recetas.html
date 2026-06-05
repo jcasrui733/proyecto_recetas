@@ -2,6 +2,23 @@
 {% block title %}Lista de Recetas{% endblock %}
 {% block content %}
 <h2>Recetas</h2>
+
+<form method="get">
+    <input type="text" name="q" placeholder="Buscar receta" value="{{ q }}">
+    <input type="text" name="autor" placeholder="Autor" value="{{ autor }}">
+
+    <select name="categoria">
+        <option value="">Todas las categorías</option>
+        {% for cat in categorias %}
+            <option value="{{ cat.id }}" {% if categoria_actual == cat.id|stringformat:"s" %}selected{% endif %}>
+                {{ cat.nombre }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Filtrar</button>
+</form>
+
 <ul>
     {% for receta in recetas %}
         <li>
@@ -12,5 +29,6 @@
         <li>No hay recetas disponibles.</li>
     {% endfor %}
 </ul>
+
 <a class="btn" href="{% url 'crear_receta' %}">Agregar nueva receta</a>
 {% endblock %}

@@ -2,14 +2,44 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView,UpdateView,DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
-from .models import Receta,Comentario
+from .models import Receta,Comentario,Categoria
 from .forms import RecetaForm, ComentarioForm
+from django.db.models import Q
 
 
 class ListaRecetasView(ListView):
     model = Receta
     template_name = "recetas/lista_recetas.html"
     context_object_name = "recetas"
+
+    def get_queryset(self):
+        queryset = Receta.objects.all()
+        q = self.request.GET.get('q')
+        categoria = self.request.GET.get('categoria')
+        autor = self.request.GET.get('autor')
+
+        if q:
+            queryset = queryset.filter(
+                Q(titulo__icontains=q) |
+                Q(ingredientes__icontains=q) |
+                Q(pasos_elaboracion__icontains=q)
+            )
+
+        if categoria:
+            queryset = queryset.filter(categoria_id=categoria)
+
+        if autor:
+            queryset = queryset.filter(autor__username__icontains=autor)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categorias'] = Categoria.objects.all()
+        context['q'] = self.request.GET.get('q', '')
+        context['autor'] = self.request.GET.get('autor', '')
+        context['categoria_actual'] = self.request.GET.get('categoria', '')
+        return context
 
 
 class DetalleRecetaView(DetailView):
