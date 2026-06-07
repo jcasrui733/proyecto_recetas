@@ -20,6 +20,7 @@ class Receta(models.Model):
     tiempo_preparacion = models.PositiveIntegerField(blank= True,null=True)
     autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete= models.CASCADE, related_name="recetas", default= 0)
     fecha_creacion = models.DateTimeField(default= timezone.now)
+    categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, null=True, blank=True)
     
     class Meta:
         ordering = ["-fecha_creacion"]

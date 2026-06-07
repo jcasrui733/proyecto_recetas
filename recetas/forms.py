@@ -5,7 +5,7 @@ from .models import Receta , Comentario
 class RecetaForm(forms.ModelForm):
     class Meta:
         model = Receta
-        fields = ["titulo","ingredientes","pasos_elaboracion", "tiempo_preparacion"]
+        fields = ["titulo","ingredientes","pasos_elaboracion", "tiempo_preparacion","categoria"]
 
 
 class ComentarioForm(forms.ModelForm):
