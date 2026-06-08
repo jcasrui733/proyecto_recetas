@@ -42,5 +42,5 @@ class Comentario(models.Model):
         ordering = ["-fecha_creacion"]
 
     def __str__(self):
-        return f" Comentario de {self.autor.username} en {self.receta.titulo}"
+        return f"Comentario de {self.autor.username} en {self.reseta_asociada.titulo}"
     
